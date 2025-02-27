@@ -1,0 +1,2 @@
+DrissionPage>=4.0.0
+rich>=12.0.0 
