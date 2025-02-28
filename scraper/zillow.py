@@ -4,6 +4,7 @@ import time
 import random
 from DrissionPage import ChromiumPage, ChromiumOptions
 from rich.console import Console
+from bs4 import BeautifulSoup
 
 console = Console()
 
@@ -139,6 +140,7 @@ async def scrape_zillow_data(zillow_url: str, max_pages: int = 2):
                         beds = "N/A"
                         baths = "N/A"
                         sqft = "N/A"
+                        property_type = "N/A"
 
                         try:
                             details_list = card.ele('css:ul.StyledPropertyCardHomeDetailsList-c11n-8-109-3__sc-1j0som5-0')
@@ -152,6 +154,10 @@ async def scrape_zillow_data(zillow_url: str, max_pages: int = 2):
                                     baths = list_items[1].text.replace('ba', '').strip()
                                 if len(list_items) >= 3:
                                     sqft = list_items[2].text.replace('sqft', '').strip()
+
+                            card = page.ele("css:div.StyledPropertyCardDataArea-c11n-8-109-3__sc-10i1r6-0")
+                            property_text = card.text()  # Obtener el texto del elemento
+                            property_type = property_text.split("-")[-1].strip()  # Extraer el tipo de propiedad
                         except Exception as e:
                             pass
 
@@ -159,13 +165,15 @@ async def scrape_zillow_data(zillow_url: str, max_pages: int = 2):
                         beds = "N/A" if beds == "--" else beds
                         baths = "N/A" if baths == "--" else baths
                         sqft = "N/A" if sqft == "--" else sqft
+                        property_type = "N/A" if property_type == "--" else property_type
 
                         properties_data.append({
                             'address': address,
                             'price': price,
                             'beds': beds,
                             'baths': baths,
-                            'sqft': sqft
+                            'sqft': sqft,
+                            'property_type': property_type
                         })
                         properties_found_this_page += 1
                     except Exception as e:

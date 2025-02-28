@@ -57,7 +57,8 @@ class ZillowCLI:
         table.add_column("Beds", style="magenta")
         table.add_column("Baths", style="magenta")
         table.add_column("Sq.Ft.", style="blue")
-        
+        table.add_column("property_type", style="blue")
+
         for i, prop in enumerate(properties, 1):
             table.add_row(
                 str(i),
@@ -65,7 +66,8 @@ class ZillowCLI:
                 prop['price'],
                 prop['beds'],
                 prop['baths'],
-                prop['sqft']
+                prop['sqft'],
+                prop['property_type']
             )
         
         console.print(table)
