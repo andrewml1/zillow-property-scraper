@@ -155,8 +155,8 @@ async def scrape_zillow_data(zillow_url: str, max_pages: int = 2):
                                 if len(list_items) >= 3:
                                     sqft = list_items[2].text.replace('sqft', '').strip()
 
-                            card = page.ele("css:div.StyledPropertyCardDataArea-c11n-8-109-3__sc-10i1r6-0")
-                            property_texts = card.texts()  # Obtener todos los textos dentro del elemento como lista
+                            infoProp = card.ele("css:div.StyledPropertyCardDataArea-c11n-8-109-3__sc-10i1r6-0.fqJdKU")
+                            property_texts = infoProp.text.strip()  # Obtener todos los textos dentro del elemento como lista
                             property_text = " ".join(property_texts)  # Convertir lista en una sola cadena de texto
                             property_type = property_text.split("-")[-1].strip()  # Extraer el tipo de propiedad
 
